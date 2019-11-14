@@ -512,6 +512,546 @@ Auto2=Auto[[2]]
 #h2o.saveModel(Auto1,path="/home/n263890/R/DeepCash",force = TRUE) 
 ####################################################################################################################################
 
+####################################################################################################################################
+# Run 3:  Shallow Network
+# hidden = c(311,256,311)
+####################################################################################################################################
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[3]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,256,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[3]])
+
+# Returns an H2OFrame object containing the reconstruction MSE or the per-feature squared error.
+
+# Anon[[1]] = h2o.anomaly(Auto[[1]], DC_all_train.h2o, per_feature=FALSE)
+
+#Train_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_train.h2o, per_feature=TRUE)
+#Dev_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_dev.h2o, per_feature=TRUE)
+#Test_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_test.h2o, per_feature=TRUE)
+
+Train_MSE_All_1014[[3]]=h2o.anomaly(Model_1014[[3]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[3]]=h2o.anomaly(Model_1014[[3]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[3]]=h2o.anomaly(Model_1014[[3]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[3]])
+sum(Dev_MSE_All_1014[[3]])
+sum(Test_MSE_All_1014[[3]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+#tic("Error Plotting")
+# plot[[1]]=plot(sort(Err[[1]]$Reconstruction.MSE), main='Full (304,256,128,64,32,16,8,4,3,4,8,16,32,64,128,256,304) epochs = 400 "TanhWithDropout" max_w2=500')
+# toc()
+
+toc()
+
+#Model1_1014=Model_1014[[3]]
+#h2o.saveModel(Auto1,path="/home/n263890/R/DeepCash",force = TRUE)
+####################################################################################################################################
+
+####################################################################################################################################
+# Run 4:  Deep and Narrow Network
+# hidden = c(311,256,128,64,32,16,8,4,3,4,8,16,32,64,128,256,311)
+####################################################################################################################################
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[4]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,256,128,64,32,16,8,4,3,4,8,16,32,64,128,256,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[4]])
+
+# Returns an H2OFrame object containing the reconstruction MSE or the per-feature squared error.
+
+# Anon[[1]] = h2o.anomaly(Auto[[1]], DC_all_train.h2o, per_feature=FALSE)
+
+#Train_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_train.h2o, per_feature=TRUE)
+#Dev_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_dev.h2o, per_feature=TRUE)
+#Test_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_test.h2o, per_feature=TRUE)
+
+Train_MSE_All_1014[[4]]=h2o.anomaly(Model_1014[[4]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[4]]=h2o.anomaly(Model_1014[[4]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[4]]=h2o.anomaly(Model_1014[[4]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[4]])
+sum(Dev_MSE_All_1014[[4]])
+sum(Test_MSE_All_1014[[4]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+#tic("Error Plotting")
+# plot[[1]]=plot(sort(Err[[1]]$Reconstruction.MSE), main='Full (304,256,128,64,32,16,8,4,3,4,8,16,32,64,128,256,304) epochs = 400 "TanhWithDropout" max_w2=500')
+# toc()
+
+toc()
+
+#Model1_1014=Model_1014[[3]]
+#h2o.saveModel(Auto1,path="/home/n263890/R/DeepCash",force = TRUE)
+
+####################################################################################################################################
+# Run 5:  Non-symmetric Autoencoder
+# hidden = c(311,36,99,222,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+#features <-colnames(DC_all_train.h2o)
+
+
+#Trying to predict with an unstable model.
+#Job was aborted due to observed numerical instability (exponential growth).
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[5]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,36,99,222,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[5]])
+
+# Returns an H2OFrame object containing the reconstruction MSE or the per-feature squared error.
+
+# Anon[[1]] = h2o.anomaly(Auto[[1]], DC_all_train.h2o, per_feature=FALSE)
+
+#Train_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_train.h2o, per_feature=TRUE)
+#Dev_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_dev.h2o, per_feature=TRUE)
+#Test_Rec_PerFeat[[1]]=h2o.anomaly(Model[[1]], DC_all_test.h2o, per_feature=TRUE)
+
+Train_MSE_All_1014[[5]]=h2o.anomaly(Model_1014[[5]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[5]]=h2o.anomaly(Model_1014[[5]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[5]]=h2o.anomaly(Model_1014[[5]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[5]])
+sum(Dev_MSE_All_1014[[5]])
+sum(Test_MSE_All_1014[[5]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+#tic("Error Plotting")
+# plot[[1]]=plot(sort(Err[[1]]$Reconstruction.MSE), main='Full (304,256,128,64,32,16,8,4,3,4,8,16,32,64,128,256,304) epochs = 400 "TanhWithDropout" max_w2=500')
+# toc()
+
+toc()
+
+#Model1_1014=Model_1014[[3]]
+#h2o.saveModel(Auto1,path="/home/n263890/R/DeepCash",force = TRUE)
+
+
+####################################################################################################################################
+# Run 6:   Non-symmetric Autoencoder
+# hidden = c(311,222,99,36,99,222,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[6]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,222,99,36,99,222,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[6]])
+
+Train_MSE_All_1014[[6]]=h2o.anomaly(Model_1014[[6]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[6]]=h2o.anomaly(Model_1014[[6]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[6]]=h2o.anomaly(Model_1014[[6]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[6]])
+sum(Dev_MSE_All_1014[[6]])
+sum(Test_MSE_All_1014[[6]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+
+####################################################################################################################################
+# Run 7:  Non-symmetric Autoencoder
+# hidden = c(311,36,18,99,222,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[7]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,36,18,99,222,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[7]])
+
+Train_MSE_All_1014[[7]]=h2o.anomaly(Model_1014[[7]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[7]]=h2o.anomaly(Model_1014[[7]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[7]]=h2o.anomaly(Model_1014[[7]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[7]])
+sum(Dev_MSE_All_1014[[7]])
+sum(Test_MSE_All_1014[[7]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+####################################################################################################################################
+
+####################################################################################################################################
+# Run 8:  Non-symmetric Autoencoder
+# hidden = c(311,18,99,222,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[8]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,18,99,222,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[8]])
+
+Train_MSE_All_1014[[8]]=h2o.anomaly(Model_1014[[8]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[8]]=h2o.anomaly(Model_1014[[8]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[8]]=h2o.anomaly(Model_1014[[8]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[8]])
+sum(Dev_MSE_All_1014[[8]])
+sum(Test_MSE_All_1014[[8]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+####################################################################################################################################
+# Run 9:  Non-symmetric Autoencoder
+# hidden = c(311,222,36,99,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[9]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,222,36,99,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[9]])
+
+Train_MSE_All_1014[[9]]=h2o.anomaly(Model_1014[[9]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[9]]=h2o.anomaly(Model_1014[[9]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[9]]=h2o.anomaly(Model_1014[[9]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[9]])
+sum(Dev_MSE_All_1014[[9]])
+sum(Test_MSE_All_1014[[9]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+
+####################################################################################################################################
+
+####################################################################################################################################
+# Run 10:  Middle layer wider
+# hidden = c(311,777,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[10]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,777,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[10]])
+
+Train_MSE_All_1014[[10]]=h2o.anomaly(Model_1014[[10]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[10]]=h2o.anomaly(Model_1014[[10]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[10]]=h2o.anomaly(Model_1014[[10]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[10]])
+sum(Dev_MSE_All_1014[[10]])
+sum(Test_MSE_All_1014[[10]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+####################################################################################################################################
+# Run 11:  Non-symmetric Autoencoder Deep but Narrow
+# hidden = c(311,222,36,18,9,4,3,4,9,18,36,99,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[11]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,222,36,18,9,4,3,4,9,18,36,99,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[11]])
+
+Train_MSE_All_1014[[11]]=h2o.anomaly(Model_1014[[11]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[11]]=h2o.anomaly(Model_1014[[11]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[11]]=h2o.anomaly(Model_1014[[11]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[11]])
+sum(Dev_MSE_All_1014[[11]])
+sum(Test_MSE_All_1014[[11]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+
+####################################################################################################################################
+####################################################################################################################################
+# Run 12:  Non-symmetric Autoencoder
+# hidden = c(311,222,36,99,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[12]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,222,99,36,99,222,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[12]])
+
+Train_MSE_All_1014[[12]]=h2o.anomaly(Model_1014[[12]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[12]]=h2o.anomaly(Model_1014[[12]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[12]]=h2o.anomaly(Model_1014[[12]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[12]])
+sum(Dev_MSE_All_1014[[12]])
+sum(Test_MSE_All_1014[[12]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+####################################################################################################################################
+# Run 9:  Non-symmetric Autoencoder
+# hidden = c(311,222,36,99,311)
+####################################################################################################################################
+
+tic("Total")
+
+tic("Model Fitting")
+
+features <-colnames(DC_all_train.h2o)
+
+Model_1014[[13]] = h2o.deeplearning(x = features, training_frame = DC_all_train.h2o,
+                                   autoencoder = TRUE,
+                                   reproducible = F, #slow - turn off for real problems
+                                   #seed = 1234,
+                                   hidden = c(311,222,18,99,311), epochs = 40,
+                                   input_dropout_ratio = 0.2,
+                                   max_w2=50,
+                                   #loss = "CrossEntropy",
+                                   activation = "TanhWithDropout")
+
+toc()
+
+tic("Error Recording")
+
+summary(Model_1014[[13]])
+
+Train_MSE_All_1014[[13]]=h2o.anomaly(Model_1014[[13]], DC_all_train.h2o, per_feature=FALSE)
+Dev_MSE_All_1014[[13]]=h2o.anomaly(Model_1014[[13]], DC_all_dev.h2o, per_feature=FALSE)
+Test_MSE_All_1014[[13]]=h2o.anomaly(Model_1014[[13]], DC_all_test.h2o, per_feature=FALSE)
+
+sum(Train_MSE_All_1014[[13]])
+sum(Dev_MSE_All_1014[[13]])
+sum(Test_MSE_All_1014[[13]])
+
+# per_feature=FALSE gives out MSE for entrire row.
+
+#Err[[1]]<-as.data.frame(Anon[[1]])
+toc()
+
+toc()
+
+
+####################################################################################################################################
+
+####################################################################################################################################
+
+lapply(Train_MSE_All_1014,mean)
+lapply(Dev_MSE_All_1014,mean)
+lapply(Test_MSE_All_1014,mean)
+
+lapply(Train_MSE_All_1014,sum)
+lapply(Dev_MSE_All_1014,sum)
+lapply(Test_MSE_All_1014,sum)
+
+lapply(Train_MSE_All_1014,head)
+lapply(Dev_MSE_All_1014,head)
+lapply(Test_MSE_All_1014,head)
 
 ################################################################################################################################
 ################################################################################################################################
